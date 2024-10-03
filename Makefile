@@ -8,7 +8,7 @@ dev: migrate
 build: templ tailwind sqlc
 	go build -o ./tmp/main .
 
-test: templ tailwind
+test: templ tailwind sqlc
 	go test ./...
 
 templ:
