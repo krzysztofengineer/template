@@ -52,12 +52,15 @@ func NewApp(db *sql.DB) *echo.Echo {
 
 	e.StaticFS("dist", echo.MustSubFS(distFS, "dist"))
 
-	dashboardHandler := &DashboardHandler{}
 	e.GET("/", func(c echo.Context) error {
 		return pages.Home().Render(c.Request().Context(), c.Response().Writer)
 	})
 
+	dashboardHandler := &DashboardHandler{}
 	e.GET("/dashboard", dashboardHandler.Index)
+
+	loginHandler := NewLoginHandler(db)
+	e.GET("/login", loginHandler.Page)
 
 	return e
 }
