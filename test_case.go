@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"net/http"
 	"net/http/httptest"
 )
@@ -11,7 +12,12 @@ type TestCase struct {
 }
 
 func NewTestCase() *TestCase {
-	s := httptest.NewServer(NewApp())
+	db, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		panic(err)
+	}
+
+	s := httptest.NewServer(NewApp(db))
 
 	return &TestCase{
 		Server: s,

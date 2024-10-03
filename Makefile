@@ -2,7 +2,7 @@ export GOOSE_DRIVER=sqlite3
 export GOOSE_DBSTRING=./db/db.sqlite
 export GOOSE_MIGRATION_DIR=./db/migrations
 
-dev: migrate 
+dev: 
 	air
 
 build: templ tailwind sqlc
