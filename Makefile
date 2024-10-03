@@ -1,8 +1,11 @@
 dev:
 	air
 
-build: templ
+build: templ tailwind
 	go build -o ./tmp/main .
+
+test: templ tailwind
+	go test ./...
 
 templ:
 	templ generate
