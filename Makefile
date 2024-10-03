@@ -6,3 +6,6 @@ build: templ
 
 templ:
 	templ generate
+
+tailwind:
+	tailwindcss -i css/main.css -o dist/main.css
