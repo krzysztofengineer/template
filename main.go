@@ -5,6 +5,8 @@ import (
 
 	"github.com/krzysztofengineer/template/pages"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"golang.org/x/time/rate"
 )
 
 var (
@@ -14,6 +16,10 @@ var (
 
 func main() {
 	e := echo.New()
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	e.Use(middleware.RequestID())
+	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(rate.Limit(30))))
 
 	e.StaticFS("dist", echo.MustSubFS(distFS, "dist"))
 
