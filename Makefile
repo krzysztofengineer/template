@@ -1,4 +1,8 @@
-dev:
+export GOOSE_DRIVER=sqlite3
+export GOOSE_DBSTRING=./db/db.sqlite
+export GOOSE_MIGRATION_DIR=./db/migrations
+
+dev: migrate
 	air
 
 build: templ tailwind
@@ -12,3 +16,9 @@ templ:
 
 tailwind:
 	tailwindcss -i css/main.css -o dist/main.css
+
+create_migration:
+	goose -s create $(name) sql
+
+migrate:
+	goose up
