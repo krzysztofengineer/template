@@ -2,10 +2,10 @@ export GOOSE_DRIVER=sqlite3
 export GOOSE_DBSTRING=./db/db.sqlite
 export GOOSE_MIGRATION_DIR=./db/migrations
 
-dev: migrate
+dev: migrate 
 	air
 
-build: templ tailwind
+build: templ tailwind sqlc
 	go build -o ./tmp/main .
 
 test: templ tailwind
@@ -22,3 +22,6 @@ create_migration:
 
 migrate:
 	goose up
+
+sqlc:
+	sqlc generate

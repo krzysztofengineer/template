@@ -1,4 +1,5 @@
 tmp/
 dist/*.css
+db/*.go
 *_templ.go
 *.sqlite
