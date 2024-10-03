@@ -28,12 +28,14 @@ func main() {
 	}
 
 	e := NewApp(db)
+	e.Use(middleware.Logger())
 
 	e.Logger.Fatal(e.Start(":3000"))
 }
 
 func NewApp(db *sql.DB) *echo.Echo {
 	goose.SetBaseFS(migrationsFS)
+	goose.SetLogger(goose.NopLogger())
 
 	if err := goose.SetDialect("sqlite"); err != nil {
 		panic(err)
@@ -45,15 +47,17 @@ func NewApp(db *sql.DB) *echo.Echo {
 
 	e := echo.New()
 	e.Use(middleware.Recover())
-	e.Use(middleware.Logger())
 	e.Use(middleware.RequestID())
 	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(rate.Limit(30))))
 
 	e.StaticFS("dist", echo.MustSubFS(distFS, "dist"))
 
+	dashboardHandler := &DashboardHandler{}
 	e.GET("/", func(c echo.Context) error {
 		return pages.Home().Render(c.Request().Context(), c.Response().Writer)
 	})
+
+	e.GET("/dashboard", dashboardHandler.Index)
 
 	return e
 }
