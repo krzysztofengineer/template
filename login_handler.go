@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"net/http"
 
+	"github.com/krzysztofengineer/template/forms"
 	"github.com/krzysztofengineer/template/pages"
 	"github.com/labstack/echo/v4"
 )
@@ -19,4 +21,12 @@ func NewLoginHandler(db *sql.DB) *LoginHandler {
 
 func (*LoginHandler) Page(c echo.Context) error {
 	return pages.Login().Render(c.Request().Context(), c.Response().Writer)
+}
+
+func (*LoginHandler) Form(c echo.Context) error {
+	c.Response().WriteHeader(http.StatusBadRequest)
+	errors := map[string]string{
+		"email": "The email is required",
+	}
+	return forms.Login(errors).Render(c.Request().Context(), c.Response().Writer)
 }

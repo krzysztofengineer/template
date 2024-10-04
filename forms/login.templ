@@ -1,0 +1,9 @@
+package forms
+
+templ Login(errors map[string]string) {
+	<form>
+		if err, ok := errors["email"]; ok {
+			<div>{ err }</div>
+		}
+	</form>
+}

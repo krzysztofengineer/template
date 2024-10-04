@@ -61,6 +61,7 @@ func NewApp(db *sql.DB) *echo.Echo {
 
 	loginHandler := NewLoginHandler(db)
 	e.GET("/login", loginHandler.Page)
+	e.POST("/login", loginHandler.Form)
 
 	return e
 }
