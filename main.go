@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"embed"
 
+	"github.com/krzysztofengineer/template/db"
 	"github.com/krzysztofengineer/template/pages"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -33,7 +34,7 @@ func main() {
 	e.Logger.Fatal(e.Start(":3000"))
 }
 
-func NewApp(db *sql.DB) *echo.Echo {
+func NewApp(conn *sql.DB) *echo.Echo {
 	goose.SetBaseFS(migrationsFS)
 	goose.SetLogger(goose.NopLogger())
 
@@ -41,9 +42,11 @@ func NewApp(db *sql.DB) *echo.Echo {
 		panic(err)
 	}
 
-	if err := goose.Up(db, "db/migrations"); err != nil {
+	if err := goose.Up(conn, "db/migrations"); err != nil {
 		panic(err)
 	}
+
+	db := db.New(conn)
 
 	e := echo.New()
 	e.Use(middleware.Recover())

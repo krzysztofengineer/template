@@ -9,6 +9,7 @@ import (
 type TestCase struct {
 	Server *httptest.Server
 	Client *http.Client
+	DB     *sql.DB
 }
 
 func NewTestCase() *TestCase {
@@ -22,6 +23,7 @@ func NewTestCase() *TestCase {
 	return &TestCase{
 		Server: s,
 		Client: s.Client(),
+		DB:     db,
 	}
 }
 
